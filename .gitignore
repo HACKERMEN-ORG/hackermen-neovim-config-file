@@ -10,14 +10,12 @@
 ./perf.data.old
 ./TAGS
 ./EXIT
-./autoload/**
 ./.git/**
 .claude/**
 .netrwhist
 EXIT
 TAGS
 _type
-autoload/**
 initprof
 perf.data
 perf.data.old

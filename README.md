@@ -3,7 +3,7 @@
 Now in lua, so it won't work with vim 8 anymore. Now debloated! Includes
 Glozz's AI features.
 
-Open vim and do `:PlugUpdate`, `:PlugInstall`. BAM!
+Run nvim and do,`:PlugInstall`. BAM!
 
 # FEATURES
 

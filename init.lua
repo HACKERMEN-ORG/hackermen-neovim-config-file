@@ -1,5 +1,6 @@
 -- Hint:
 -- :PlugInstall :PlugUpdate :PlugUpgrade :PlugClean
+
 local vim = vim
 local opt = vim.opt
 local g = vim.g
@@ -7,16 +8,8 @@ local api = vim.api
 
 local Plug = vim.fn["plug#"]
 
--- Auto-install vim-plug if not present
-local plug_path = vim.fn.expand('~/.config/nvim/autoload/plug.vim')
-if not vim.fn.filereadable(plug_path) then
-    print("Downloading junegunn/vim-plug to manage plugins...")
-    vim.fn.system('mkdir -p ~/.config/nvim/autoload/')
-    vim.fn.system('curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ~/.config/nvim/autoload/plug.vim')
-    vim.cmd('autocmd VimEnter * PlugInstall')
-end
-
-vim.call("plug#begin", "~/.config/nvim/plugged")
+--vim.call("plug#", "begin", "~/.config/nvim/plugged")
+Plug("begin",  "~/.config/nvim/plugged")
 
     -- Plug("stevearc/oil.nvim")
     Plug("nvim-treesitter/nvim-treesitter", {["do"] = ":TSUpdate"})
@@ -35,8 +28,7 @@ vim.call("plug#begin", "~/.config/nvim/plugged")
     Plug("tpope/vim-commentary")
     Plug("farmergreg/vim-lastplace")
     Plug("tpope/vim-surround")
-
-vim.call("plug#end")
+Plug("end")
 
 local wk = require("which-key")
 wk.add({
@@ -211,3 +203,4 @@ vim.cmd("source ~/.config/nvim/slop/lsp.lua")
 vim.cmd("source ~/.config/nvim/slop/lsp/pylsp.lua")
 vim.cmd("source ~/.config/nvim/slop/lsp/clangd.lua")
 vim.cmd("source ~/.config/nvim/slop/lsp/cl_lsp.lua")
+
