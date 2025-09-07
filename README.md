@@ -1,3 +1,4 @@
+[webpage](https://therealtruex.com/posts/Minimal-nvim-config-optional-AI-slop-enjoy)
 # Minimal nvim config optional AI slop (enjoy!)
 
 A friend sent me a neomutt configuration which was thousands of lines
