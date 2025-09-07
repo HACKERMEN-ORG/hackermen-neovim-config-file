@@ -22,8 +22,10 @@ Open vim and do `:PlugUpdate`, `:PlugInstall`. BAM!
 
 # NON-FEATURES
 - Not crazy modifications to vim defaults
-- Only one file
+- Only one file (everything else in "slop" folder)
 - No major changes to the packages used
+- No window management. Use a terminal multiplexer.
+- No claude code. Same.
 
 Source your own config at the bottom of the init.lua and work from these sane defaults. 
 
@@ -38,7 +40,7 @@ Then, make changes to the init.lua and send a pull request.
 ARGH. Just use dvtm/mtm/abduco or your window manager to deal with
 it. None of the claude vim projects are smart enough to send parts of
 buffers to the claude like slime does for lisp. Those claude vim packages
-are just
+are just glorified terminals using vim as a (very bad) multiplexer.
 
 ### Plugged *is* better than Lazy
 

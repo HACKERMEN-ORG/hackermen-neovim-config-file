@@ -1,6 +1,10 @@
 -- Hint:
 -- :PlugInstall :PlugUpdate :PlugUpgrade :PlugClean
 local vim = vim
+local opt = vim.opt
+local g = vim.g
+local api = vim.api
+
 local Plug = vim.fn["plug#"]
 
 -- Auto-install vim-plug if not present
@@ -144,6 +148,9 @@ opt.redrawtime = 2000 -- Increase redraw timeout for complex operations
 opt.scroll = 0 -- Use default scroll calculation to prevent buffer pollution
 g.loaded_perl_provider = 0 -- Keep disabled (rarely used)
 
+local function ugroup(name)
+	return api.nvim_create_augroup("user_" .. name, { clear = true })
+end
 -- Enable Goyo by default for mutt writing
 vim.api.nvim_create_autocmd({'BufRead', 'BufNewFile'}, {
   pattern = '/tmp/*neomutt*',
@@ -198,7 +205,9 @@ api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight yanked text",
 })
 
-vim.source("~/.config/nvim/slop/lsp.lua")
-vim.source("~/.config/nvim/slop/lsp/pylsp.lua")
-vim.source("~/.config/nvim/slop/lsp/clangd.lua")
-vim.source("~/.config/nvim/slop/lsp/cl_lsp.lua")
+-- optional SLOP
+vim.cmd("source ~/.config/nvim/slop/treesitter.lua")
+vim.cmd("source ~/.config/nvim/slop/lsp.lua")
+vim.cmd("source ~/.config/nvim/slop/lsp/pylsp.lua")
+vim.cmd("source ~/.config/nvim/slop/lsp/clangd.lua")
+vim.cmd("source ~/.config/nvim/slop/lsp/cl_lsp.lua")
