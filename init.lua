@@ -6,11 +6,12 @@ local opt = vim.opt
 local g = vim.g
 local api = vim.api
 
+local plug_path = vim.fn.expand('~/.config/nvim/autoload/plug.vim')
+
 local Plug = vim.fn["plug#"]
 
---vim.call("plug#", "begin", "~/.config/nvim/plugged")
-Plug("begin",  "~/.config/nvim/plugged")
 
+vim.call("plug#begin", "~/.config/nvim/plugged")
     -- Plug("stevearc/oil.nvim")
     Plug("nvim-treesitter/nvim-treesitter", {["do"] = ":TSUpdate"})
     Plug("hrsh7th/nvim-cmp")
@@ -28,10 +29,12 @@ Plug("begin",  "~/.config/nvim/plugged")
     Plug("tpope/vim-commentary")
     Plug("farmergreg/vim-lastplace")
     Plug("tpope/vim-surround")
-Plug("end")
 
-local wk = require("which-key")
-wk.add({
+vim.call("plug#end")
+
+local wk_ok, wk = pcall(require, "which-key")
+if wk_ok then
+  wk.add({
   -- spellcheck/shellcheck
   { "<leader>s", group = "Check buffer"},
   { "<leader>ss", group = "Spellcheck"},
@@ -41,7 +44,8 @@ wk.add({
   { "<leader>sss", ":setlocal spell! spelllang=es<CR>", desc = "ES Spellcheck",   mode = "n" },
   { "<leader>sso", ":setlocal spell! spelllang=eo<CR>", desc = "EO Spellcheck",   mode = "n" },
   { "<leader>sh", ":setlocal !clear && shellcheck %<CR>",     desc = "SHellcheck (sh)", mode = "n" },
-})
+  })
+end
 
 -- Minimal completion
 local cmp = require('cmp')
