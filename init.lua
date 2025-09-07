@@ -47,6 +47,42 @@ wk.add({
   { "<leader>sh", ":setlocal !clear && shellcheck %<CR>",     desc = "SHellcheck (sh)", mode = "n" },
 })
 
+-- Minimal completion
+local cmp = require('cmp')
+cmp.setup({
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-j>'] = cmp.mapping.select_next_item(),
+    ['<C-k>'] = cmp.mapping.select_prev_item(),
+    ['<Tab>'] = cmp.mapping.confirm({ select = true }),
+  }),
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'tags' },
+    { name = 'buffer' },
+    { name = 'path' },
+  })
+})
+cmp.setup.cmdline({ "/", "?" }, {
+	mapping = cmp.mapping.preset.cmdline(),
+	sources = {
+		{ name = "buffer" },
+	},
+})
+
+cmp.setup.cmdline(":", {
+	mapping = cmp.mapping.preset.cmdline(),
+	sources = cmp.config.sources({
+		{ name = "path" },
+	}, {
+		{ name = "cmdline" },
+	}),
+})
+
+
 -- Turns off highlighting on the bits of code that are changed, so the
 -- line that is changed is highlighted but the actual text that has changed
 -- stands out on the line and is readable.
@@ -94,8 +130,19 @@ vim.o.number = true
 -- Splits open at the bottom and right, which is non-retarded, unlike vim defaults.
 vim.o.splitbelow = true
 vim.o.splitright = true
-
-
+opt.scrolloff = 3 -- Reduced to allow zt/zb to work properly
+opt.sidescrolloff = 8 -- Enhanced horizontal scroll buffer
+-- M4 Pro Max Performance Optimizations
+opt.updatetime = 150 -- Much more responsive than Pi (was 1000)
+opt.timeoutlen = 300 -- Faster mapped sequence timeout
+opt.ttyfast = true -- Keep for terminal compatibility
+opt.synmaxcol = 3000 -- Full line highlighting (was 240)
+opt.maxmempattern = 20000 -- 10x memory increase for complex patterns
+-- Additional terminal fixes for scroll desync
+opt.lazyredraw = false -- Ensure screen updates are immediate
+opt.redrawtime = 2000 -- Increase redraw timeout for complex operations
+opt.scroll = 0 -- Use default scroll calculation to prevent buffer pollution
+g.loaded_perl_provider = 0 -- Keep disabled (rarely used)
 
 -- Enable Goyo by default for mutt writing
 vim.api.nvim_create_autocmd({'BufRead', 'BufNewFile'}, {
@@ -142,22 +189,16 @@ require('nvim-treesitter.configs').setup {
 -- Set completeopt for automatic menu
 vim.opt.completeopt = {'menu', 'menuone', 'noselect'}
 
--- Minimal completion
-local cmp = require('cmp')
-cmp.setup({
-  window = {
-    completion = cmp.config.window.bordered(),
-    documentation = cmp.config.window.bordered(),
-  },
-  mapping = cmp.mapping.preset.insert({
-    ['<C-j>'] = cmp.mapping.select_next_item(),
-    ['<C-k>'] = cmp.mapping.select_prev_item(),
-    ['<Tab>'] = cmp.mapping.confirm({ select = true }),
-  }),
-  sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-    { name = 'tags' },
-    { name = 'buffer' },
-    { name = 'path' },
-  })
+-- Highlight on yank
+api.nvim_create_autocmd("TextYankPost", {
+	group = ugroup("highlight_yank"),
+	callback = function()
+		vim.highlight.on_yank({ timeout = 200 })
+	end,
+	desc = "Highlight yanked text",
 })
+
+vim.source("~/.config/nvim/slop/lsp.lua")
+vim.source("~/.config/nvim/slop/lsp/pylsp.lua")
+vim.source("~/.config/nvim/slop/lsp/clangd.lua")
+vim.source("~/.config/nvim/slop/lsp/cl_lsp.lua")
