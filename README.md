@@ -1,4 +1,5 @@
 [webpage](https://therealtruex.com/posts/Minimal-nvim-config-optional-AI-slop-enjoy)
+
 # Minimal nvim config optional AI slop (enjoy!)
 
 A friend sent me a neomutt configuration which was thousands of lines
@@ -41,7 +42,7 @@ Source your own config at the bottom of the init.lua and work from these sane de
 
 ## FAQ: Frequent Answers to Questions
 
-### "Source your own config at the bottom of the init.lua and work froM these sane defaults"
+### "Source your own config at the bottom of the init.lua and work from these sane defaults"
 
 Then, make changes to the init.lua and send a pull request.
 
