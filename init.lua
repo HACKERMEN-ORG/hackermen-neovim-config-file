@@ -78,8 +78,8 @@ vim.cmd('silent! solarized')
 vim.call("togglebg#map", "<F5>")
 
 -- Template and Goyo mappings
-vim.keymap.set('', '<leader><Space>', '/<CR><++><BS>', { desc = "Template shortcut" })
-vim.keymap.set('', '<leader>g', ':Goyo | set linebreak<CR>', { desc = "Nicer for writing prose" })
+vim.keymap.set('n', '<leader><Space>', '/<++><CR>dt>a<BS>', { desc = "Template shortcut" })
+vim.keymap.set('n', '<leader>g', ':Goyo | set linebreak<CR>', { desc = "Nicer for writing prose" })
 
 -- Vim settings
 -- Enable autocompletion:
