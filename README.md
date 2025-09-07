@@ -1,9 +1,18 @@
-# Minimal nvim config
+# Minimal nvim config optional AI slop (enjoy!)
 
-Now in lua, so it won't work with vim 8 anymore. Now debloated! Includes
-Glozz's AI features.
+A friend sent me a neomutt configuration which was thousands of lines
+of LLM code, using libraries where even the READMEs are written by
+LLMs. Surprisingly, it worked pretty good. Human being were never any
+good at writing VimScript anyway. Of course, to make even tiny edits,
+due to the extreme unnecessary complexity brought in by the LLM, requires
+the use of another LLM. Blargh!
 
-Run nvim and do,`:PlugInstall`. BAM!
+The solution: actually use a decent, simple init written by a human,
+and put the rest in the "optional" slop folder. Problem solved!
+
+# Install
+
+Run nvim and do,`:PlugInstall`. BAM! Future travellers: you should do `:PlugUpdate`.
 
 # FEATURES
 
