@@ -63,7 +63,7 @@ cmp.setup({
     { name = 'nvim_lsp' },
     { name = 'tags' },
     { name = 'buffer' },
-    { name = 'path' },
+    { name = 'path', option = { trailing_slash = true } },
   })
 })
 cmp.setup.cmdline({ "/", "?" }, {
@@ -114,7 +114,7 @@ vim.cmd('silent! solarized')
 vim.call("togglebg#map", "<F5>")
 
 -- Template and Goyo mappings
-vim.keymap.set('n', '<leader><Space>', '/<++><CR>dt>a<BS>', { desc = "Template shortcut" })
+vim.keymap.set('n', '<leader><Space>', '/<++><CR>llla<BS><BS><BS><BS>', { desc = "Template shortcut" })
 vim.keymap.set('n', '<leader>g', ':Goyo | set linebreak<CR>', { desc = "Nicer for writing prose" })
 
 -- Vim settings
@@ -207,4 +207,3 @@ vim.cmd("source ~/.config/nvim/slop/lsp.lua")
 vim.cmd("source ~/.config/nvim/slop/lsp/pylsp.lua")
 vim.cmd("source ~/.config/nvim/slop/lsp/clangd.lua")
 vim.cmd("source ~/.config/nvim/slop/lsp/cl_lsp.lua")
-
