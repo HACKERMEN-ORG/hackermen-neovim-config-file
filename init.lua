@@ -59,12 +59,12 @@ cmp.setup({
     ['<C-k>'] = cmp.mapping.select_prev_item(),
     ['<Tab>'] = cmp.mapping.confirm({ select = true }),
   }),
-  sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-    { name = 'tags' },
-    { name = 'buffer' },
-    { name = 'path', option = { trailing_slash = true } },
-  })
+   sources = cmp.config.sources({
+     { name = 'nvim_lsp' },
+     { name = 'tags', option = { filenames = { 'tags', 'TAGS' } } },
+     { name = 'buffer' },
+     { name = 'path', option = { trailing_slash = true } },
+   })
 })
 cmp.setup.cmdline({ "/", "?" }, {
 	mapping = cmp.mapping.preset.cmdline(),

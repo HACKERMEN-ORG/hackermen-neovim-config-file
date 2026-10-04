@@ -16,6 +16,16 @@ end
 local swank_port = 4005
 local clhs_map
 
+-- Use the Conjure build with the CL features (stickers, debugger, trace, macroexpand,
+-- HyperSpec) from ~/src/conjure-cl-all instead of plugged/conjure, when it exists.
+local cl_all = vim.fn.expand("~/src/conjure-cl-all")
+if vim.fn.isdirectory(cl_all) == 1 then
+  vim.opt.rtp:remove(vim.fn.expand("~/.config/nvim/plugged/conjure"))
+  vim.opt.rtp:prepend(cl_all)
+  vim.g["conjure#client#common_lisp#swank#hyperspec_root"] = clhs_root
+  vim.g["conjure#client#common_lisp#swank#mapping#sticker_toggle"] = "st" -- ,ss is SwankStart
+end
+
 local function clhs_lookup(sym)
   if not clhs_map then
     clhs_map = {}
@@ -41,25 +51,12 @@ local function eval(code)
   require("conjure.eval")["eval-str"]({ code = code, origin = "custom" })
 end
 
-local function form_text(root)
-  local f = require("conjure.extract").form({ ["root?"] = root })
-  return f and f.content
-end
-
--- CL TRACE prints to swank's *trace-output*, which Conjure never shows. Wrap the
--- function with SBCL encapsulation instead: output goes to *standard-output*,
--- which Conjure captures per eval. BT adds a backtrace ("log breakpoint").
+-- Wrap the function with SBCL encapsulation: output goes to *standard-output*,
+-- which Conjure captures per eval. %s adds a backtrace ("log breakpoint").
 local trace_tmpl = [[(sb-int:encapsulate '%%s 'conjure-trace
   (lambda (fn &rest args) (format t "~&;; > ~S ~S~%%%%" '%%s args) %s
     (let ((r (multiple-value-list (apply fn args)))) (format t "~&;; < ~S~%%%%" r) (values-list r))))]]
 local untrace_tmpl = "(sb-int:unencapsulate '%s 'conjure-trace)"
-
-local function wrap_form(fn)
-  return function()
-    local c = form_text(false)
-    if c then eval(("(%s '%s)"):format(fn, c)) end
-  end
-end
 
 local function wrap_word(tmpl)
   return function()
@@ -84,14 +81,10 @@ vim.api.nvim_create_autocmd("FileType", {
     local m = function(lhs, rhs, desc)
       vim.keymap.set("n", "<localleader>" .. lhs, rhs, { buffer = ev.buf, desc = desc })
     end
-    m("hs", function() vim.cmd("CLHS") end, "HyperSpec (local) for word")
+    -- The cl-all Conjure maps: hs HyperSpec, m1/ma macroexpand-1/-all, tt/ta trace/untrace all,
+    -- st/sl/sc stickers, dr debugger restart. A real (break) now shows the debugger in the log.
     m("hd", wrap_word("(documentation '%s 'function)"), "Docstring of word")
-    m("m1", wrap_form("macroexpand-1"), "macroexpand-1 current form")
-    m("ma", wrap_form("macroexpand"), "macroexpand current form")
-    m("mA", wrap_form("swank/backend:macroexpand-all"), "macroexpand-all (code walker)")
-    m("tt", function() local w = vim.fn.expand("<cword>"); eval(trace_tmpl:format(""):format(w, w)) end, "Trace word")
-    m("tu", wrap_word(untrace_tmpl), "Untrace word")
-    -- No SLDB in Conjure: a real (break) hangs the connection. Log args+backtrace instead.
+    -- Breakpoint-as-log: print args and a backtrace on each call, without stopping.
     m("bb", function() local w = vim.fn.expand("<cword>"); eval(trace_tmpl:format("(sb-debug:print-backtrace :count 12 :stream *standard-output*)"):format(w, w)) end, "Breakpoint: log args+backtrace")
     m("bu", wrap_word(untrace_tmpl), "Remove breakpoint on word")
     m("ss", function() vim.cmd("SwankStart") end, "Start SBCL swank on :4005")
