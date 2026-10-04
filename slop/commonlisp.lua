@@ -8,7 +8,11 @@ if ok_pe then
   paredit.setup({})
 end
 
-local clhs_root = vim.fn.expand("~/.local/share/hyperspec/HyperSpec/")
+-- localdocs copy first; the downloaded copy is the fallback if localdocs is reorganised.
+local clhs_root = vim.fn.expand("~/localdocs/hyperspec/")
+if vim.fn.filereadable(clhs_root .. "Data/Map_Sym.txt") == 0 then
+  clhs_root = vim.fn.expand("~/.local/share/hyperspec/HyperSpec/")
+end
 local swank_port = 4005
 local clhs_map
 
